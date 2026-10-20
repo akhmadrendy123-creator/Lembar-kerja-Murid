@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+
+  h1, h2, h3, .font-serif-display {
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+
+  .font-cinzel {
+    font-family: 'Cinzel', serif;
+  }
+
+  .font-mono-math {
+    font-family: 'Fira Code', monospace;
+  }
+}
+
+/* Malay Royal Songket & Golden Border Accents */
+.songket-gold-border {
+  border-image: linear-gradient(to right, #d97706, #fbbf24, #f59e0b, #b45309) 1;
+}
+
+.songket-bg-pattern {
+  background-color: #fbfdfc;
+  background-image: radial-gradient(#059669 0.75px, transparent 0.75px), radial-gradient(#d97706 0.75px, #fbfdfc 0.75px);
+  background-size: 30px 30px;
+  background-position: 0 0, 15px 15px;
+  background-opacity: 0.05;
+}
+
+.songket-ribbon {
+  background: repeating-linear-gradient(
+    45deg,
+    #044e3d,
+    #044e3d 10px,
+    #065f46 10px,
+    #065f46 20px,
+    #d97706 20px,
+    #d97706 22px
+  );
+}
+
+.shimmer-gold {
+  background: linear-gradient(
+    110deg,
+    rgba(255, 255, 255, 0) 30%,
+    rgba(251, 191, 36, 0.3) 50%,
+    rgba(255, 255, 255, 0) 70%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* KaTeX custom sizing in educational cards */
+.katex {
+  font-size: 1.08em;
+}
+
+.katex-display {
+  margin: 0.6em 0 !important;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #0d9488;
+  border-radius: 9999px;
+  border: 2px solid #f1f5f9;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #0f766e;
+}

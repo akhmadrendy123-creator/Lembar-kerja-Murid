@@ -1,0 +1,6 @@
+{
+  "name": "BoriaMath - Etnomatematika Tari Boria SMP",
+  "description": "LKM interaktif etnomatematika mengungkap rahasia geometri dan sudut di balik keindahan Tari Boria Pulau Penyengat untuk Kelas 8 SMP Kurikulum Merdeka.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
