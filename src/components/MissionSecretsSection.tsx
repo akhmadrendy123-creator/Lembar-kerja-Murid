@@ -9,8 +9,8 @@ export const MissionSecretsSection: React.FC = () => {
       tag: 'Titik Temu',
       title: 'Titik Sudut (Verteks)',
       desc: 'Ketika dua arah hadap atau dua tongkat bertemu di satu titik O, bukaan sudut di antara dua sinar garis OA dan OP itulah yang kita ukur sebagai derajat sudut.',
-      mathExpr: '\\angle AOP = \\theta',
-      formula: '\\vec{OA} \\angle \\vec{OP}',
+      mathExpr: 'm\\angle AOP = \\theta',
+      formula: '\\text{Sinar } \\vec{OA} \\text{ dan } \\vec{OP}',
     },
     {
       letter: 'B',
