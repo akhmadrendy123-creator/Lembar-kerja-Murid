@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
@@ -18,6 +13,10 @@ import { ReflectionSection } from './components/ReflectionSection';
 import { FooterSummary } from './components/FooterSummary';
 import { SubmissionModal } from './components/SubmissionModal';
 import { formatLKMReport, type LKMState } from './utils/mathGeometry';
+
+// Komponen tambahan untuk merender kartu materi
+import { MathView } from './components/MathView';
+import { ScrollReveal } from './components/ScrollReveal';
 
 const STORAGE_KEY = 'boriamath_lkm_state_v1';
 
@@ -76,7 +75,6 @@ export default function App() {
   const [isCopiedGlobal, setIsCopiedGlobal] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
-  // Auto-save to localStorage
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -102,15 +100,11 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] text-slate-800 font-sans selection:bg-teal-500 selection:text-white">
-      {/* Top Navbar */}
       <Navbar onCopyLKM={handleCopyLKM} isCopied={isCopiedGlobal} />
 
-      {/* Main Content Area */}
       <main>
-        {/* Hero Section */}
         <HeroSection />
 
-        {/* Section 1: Group Identity */}
         <GroupIdentitySection
           data={state.identity}
           onChange={(identity) => {
@@ -118,16 +112,82 @@ export default function App() {
           }}
         />
 
-        {/* Target Belajar Murid Kelas 8 */}
         <TargetBelajarSection />
 
-        {/* Culture Story: Tari Boria Pulau Penyengat */}
+        {/* --- KARTU MATERI SUDUT YANG DIPINDAHKAN --- */}
+        <section className="py-8 bg-white border-y border-slate-100 shadow-sm relative z-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <ScrollReveal direction="up" delay={0.1}>
+              <h3 className="text-lg font-extrabold text-slate-800 mb-5 text-center font-serif-display">
+                Konsep Sudut Dasar pada Formasi Tari
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {/* Card 1: 180° Sudut Berpelurus */}
+                <div className="p-4 rounded-2xl bg-[#F8FAFC] border border-amber-200/80 shadow-xs hover:border-amber-400 hover:shadow-md transition-all relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 w-16 h-16 bg-teal-500/5 rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform"></div>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-xl font-black text-teal-800 font-mono-math">
+                      <MathView math="180^\circ" />
+                    </span>
+                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-teal-50 text-teal-800 border border-teal-200">
+                      Linear Pair
+                    </span>
+                  </div>
+                  <div className="text-xs font-bold text-slate-800 uppercase tracking-wide">
+                    Sudut Lurus Saf
+                  </div>
+                  <p className="text-[11px] text-slate-500 mt-1">
+                    Dua arah hadap berpelurus: <MathView math="\theta_1 + \theta_2 = 180^\circ" />
+                  </p>
+                </div>
+
+                {/* Card 2: Bertolak Belakang */}
+                <div className="p-4 rounded-2xl bg-[#F8FAFC] border border-amber-200/80 shadow-xs hover:border-amber-400 hover:shadow-md transition-all relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 w-16 h-16 bg-amber-500/5 rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform"></div>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm font-black text-amber-700 font-mono-math flex items-center gap-1">
+                      <MathView math="\angle 1 \cong \angle 3" />
+                    </span>
+                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200">
+                      Kongruen
+                    </span>
+                  </div>
+                  <div className="text-xs font-bold text-slate-800 uppercase tracking-wide">
+                    Sudut Silang
+                  </div>
+                  <p className="text-[11px] text-slate-500 mt-1">
+                    Saling bertolak belakang: <MathView math="m\angle 1 = m\angle 3" />
+                  </p>
+                </div>
+
+                {/* Card 3: Garis Sejajar & Transversal */}
+                <div className="p-4 rounded-2xl bg-[#F8FAFC] border border-amber-200/80 shadow-xs hover:border-teal-400 hover:shadow-md transition-all relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 w-16 h-16 bg-cyan-500/5 rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform"></div>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-base font-black text-teal-800 font-mono-math">
+                      <MathView math="k \parallel l" />
+                    </span>
+                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-cyan-50 text-cyan-800 border border-cyan-200">
+                      Sejajar
+                    </span>
+                  </div>
+                  <div className="text-xs font-bold text-slate-800 uppercase tracking-wide">
+                    4 Saf Barisan
+                  </div>
+                  <p className="text-[11px] text-slate-500 mt-1">
+                    Dipotong lintasan transversal garis <MathView math="m" />
+                  </p>
+                </div>
+              </div>
+            </ScrollReveal>
+          </div>
+        </section>
+        {/* --- AKHIR KARTU MATERI SUDUT --- */}
+
         <CultureStorySection />
 
-        {/* Mission Secrets: 4 Rahasia Sudut */}
         <MissionSecretsSection />
 
-        {/* Aktivitas Praktik 1: Tuas Sudut Penari */}
         <Activity1AngleLever
           angle={state.activity1.angle}
           notes={state.activity1.notes}
@@ -153,7 +213,6 @@ export default function App() {
           }}
         />
 
-        {/* Aktivitas Praktik 2: Tongkat Bersilangan */}
         <Activity2CrossSticks
           baseAngle={state.activity2.baseAngle}
           inputBertolakBelakang={state.activity2.inputBertolakBelakang}
@@ -198,7 +257,6 @@ export default function App() {
           }}
         />
 
-        {/* Aktivitas Praktik 3: Pola Lantai & Garis Transversal */}
         <Activity3Transversal
           formationId={state.activity3.formationId}
           customFormationNotes={state.activity3.customFormationNotes}
@@ -224,7 +282,6 @@ export default function App() {
           }}
         />
 
-        {/* Tantangan Kasus Lapangan: Bantu Sang Penata Tari Boria */}
         <ChoreographerChallenge
           baseAngle={state.challenge.baseAngle}
           inputSepihak={state.challenge.inputSepihak}
@@ -257,7 +314,6 @@ export default function App() {
           }}
         />
 
-        {/* Refleksi Belajar & Submission Trigger */}
         <ReflectionSection
           q1={state.reflection.q1}
           q2={state.reflection.q2}
@@ -273,17 +329,14 @@ export default function App() {
         />
       </main>
 
-      {/* Footer Summary & Audio Synthesizer */}
       <FooterSummary />
 
-      {/* Submission Modal */}
       <SubmissionModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         data={state}
       />
 
-      {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed bottom-6 right-6 z-50 bg-slate-900 text-white text-xs font-semibold px-4 py-3 rounded-xl shadow-xl flex items-center gap-2 animate-in fade-in slide-in-from-bottom-2 duration-200">
           <span className="w-2 h-2 rounded-full bg-teal-400"></span>
