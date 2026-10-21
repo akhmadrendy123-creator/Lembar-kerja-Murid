@@ -357,7 +357,7 @@ export const Activity1AngleLever: React.FC<Activity1Props> = ({
             </ScrollReveal>
           </div>
 
-          {/* Right Column: Discussion & Group Notes */}
+          {/* Right Column: Discussion & Group Notes (REVISED) */}
           <div className="lg:col-span-5">
             <ScrollReveal direction="right" delay={0.2}>
               <div className="bg-white rounded-3xl border-2 border-amber-200/90 shadow-md p-5 sm:p-6 space-y-4">
@@ -370,36 +370,36 @@ export const Activity1AngleLever: React.FC<Activity1Props> = ({
                     Catatan Pengamatan Kelompok
                   </h3>
                   <p className="text-xs text-slate-500">
-                    Diskusikan 3 pertanyaan geometri ini bersama teman kelompokmu:
+                    Diskusikan 3 pertanyaan pemandu berikut bersama teman kelompokmu:
                   </p>
                 </div>
 
-                {/* 3 Discussion Guide Points with KaTeX */}
+                {/* 3 Discussion Guide Points (Tanpa Jawaban) */}
                 <div className="space-y-2.5 text-xs">
-                  <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/70 space-y-1">
+                  <div className="p-3.5 rounded-2xl bg-[#FAF9F6] border border-slate-100 space-y-1">
                     <div className="font-bold text-slate-800 font-serif-display">
                       1. Di mana titik sudutnya?
                     </div>
-                    <p className="text-slate-600">
-                      Sudut terbentuk di titik pangkal verteks <MathView math="O" /> saat penari membelokkan arah langkah sinar <MathView math="\vec{OP}" /> terhadap garis saf <MathView math="\vec{OA}" />.
+                    <p className="text-slate-500">
+                      Sudut terbentuk di titik mana saat penari mengayunkan langkahnya?
                     </p>
                   </div>
 
-                  <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/70 space-y-1">
+                  <div className="p-3.5 rounded-2xl bg-[#FAF9F6] border border-slate-100 space-y-1">
                     <div className="font-bold text-slate-800 font-serif-display">
                       2. Apa bedanya saat sudut digeser ke 90° atau 120°?
                     </div>
-                    <p className="text-slate-600">
-                      Pada <MathView math="\theta = 90^\circ" /> penari bergerak tegak lurus (<MathView math="\perp" />), sedangkan pada <MathView math="\theta = 120^\circ" /> sudut menjadi tumpul melebar membuka formasi sayap V.
+                    <p className="text-slate-500">
+                      Apakah sudutnya menjadi lancip, siku-siku, atau tumpul?
                     </p>
                   </div>
 
-                  <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/70 space-y-1">
+                  <div className="p-3.5 rounded-2xl bg-[#FAF9F6] border border-slate-100 space-y-1">
                     <div className="font-bold text-slate-800 font-serif-display">
                       3. Mengapa sudut yang tepat penting bagi penari?
                     </div>
-                    <p className="text-slate-600">
-                      Keseragaman derajat sudut (<MathView math="\theta_i = \theta_j" />) menjamin barisan penari tidak tabrakan dan menjaga harmoni simetri panggung.
+                    <p className="text-slate-500">
+                      Bagaimana keseragaman sudut membuat tarian terlihat rapi dan tidak tabrakan?
                     </p>
                   </div>
                 </div>
@@ -407,14 +407,14 @@ export const Activity1AngleLever: React.FC<Activity1Props> = ({
                 {/* Form Textarea */}
                 <div className="space-y-2 pt-2">
                   <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider font-cinzel">
-                    Tuliskan Kesimpulan Kelompok untuk Aktivitas 1:
+                    Tuliskan Kesimpulan Kelompok Kalian:
                   </label>
                   <textarea
-                    rows={4}
+                    rows={5}
                     value={notes}
                     onChange={(e) => onNotesChange(e.target.value)}
-                    placeholder="Contoh: Titik sudut berada di posisi penari O. Ketika sudut 60°, langkah penari serong lancip dan terlihat anggun serentak..."
-                    className="w-full p-3.5 text-xs bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-teal-700 focus:bg-white transition-all text-slate-800 font-medium leading-relaxed"
+                    placeholder="Ketik hasil diskusi kelompok kalian di sini..."
+                    className="w-full p-3.5 text-xs bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-teal-700 focus:bg-white transition-all text-slate-800 font-medium leading-relaxed resize-none"
                   />
                 </div>
 
@@ -432,7 +432,7 @@ export const Activity1AngleLever: React.FC<Activity1Props> = ({
                   ) : (
                     <>
                       <CheckCircle2 className="w-4 h-4 text-amber-300" />
-                      <span>Simpan Catatan Aktivitas 1</span>
+                      <span>Simpan Catatan Pengamatan</span>
                     </>
                   )}
                 </button>
