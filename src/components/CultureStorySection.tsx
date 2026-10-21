@@ -8,7 +8,7 @@ export const CultureStorySection: React.FC = () => {
     <section id="section-budaya" className="py-8 scroll-mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
-        {/* Bagian 1: Header & Sumber Akademis (Asli) */}
+        {/* Bagian 1: Header & Sumber Akademis */}
         <ScrollReveal direction="up">
           <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
             <div className="space-y-2 max-w-3xl">
@@ -41,18 +41,20 @@ export const CultureStorySection: React.FC = () => {
           </div>
         </ScrollReveal>
 
-        {/* Bagian 2: Integrasi Video YouTube & Kotak Pengamatan (Baru) */}
+        {/* Bagian 2: Integrasi Video YouTube & Kotak Pengamatan (FIXED CSS) */}
         <ScrollReveal direction="up" delay={0.2}>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 relative w-full rounded-3xl overflow-hidden shadow-xl border-4 border-white bg-slate-900 aspect-video group">
+            
+            {/* Wrapper Video Absolut untuk memaksa rasio 16:9 */}
+            <div className="lg:col-span-2 relative w-full rounded-3xl overflow-hidden shadow-xl border-4 border-white bg-slate-900 pt-[56.25%] group">
               <iframe
-                src="https://www.youtube.com/embed/34JKOBxLrMM?rel=0"
-                title="Tarian Boria Pulau Penyengat"
+                src="https://www.youtube.com/embed/ROd_jNU_K3M?rel=0&start=35"
+                title="Pertunjukan Tari Boria Pulau Penyengat"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
-                className="w-full h-full"
+                className="absolute top-0 left-0 w-full h-full"
               ></iframe>
-              <div className="absolute top-4 left-4 pointer-events-none">
+              <div className="absolute top-4 left-4 pointer-events-none z-10">
                 <span className="px-3 py-1 rounded-full text-xs font-bold bg-amber-400 text-slate-900 shadow-md">
                   Video Amatan
                 </span>
@@ -76,7 +78,7 @@ export const CultureStorySection: React.FC = () => {
           </div>
         </ScrollReveal>
 
-        {/* Bagian 3: Visual Gambar Asli & 3 Kartu Konsep Budaya (Asli) */}
+        {/* Bagian 3: Visual Gambar Asli & 3 Kartu Konsep Budaya */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch pt-4">
           <div className="lg:col-span-5">
             <ScrollReveal direction="left" delay={0.3}>
@@ -154,3 +156,41 @@ export const CultureStorySection: React.FC = () => {
                     <span className="text-[10px] font-mono-math px-2 py-0.5 rounded bg-slate-100 text-slate-700">
                       <MathView math="k \parallel l" />
                     </span>
+                  </div>
+                </div>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Penari menjaga jarak sedepa (rentangan tangan) agar barisan depan dan belakang tidak bertabrakan dan selalu berada di garis yang sejajar rapi: jarak antara saf selalu ekuidistan (<MathView math="d_1 = d_2" />).
+                </p>
+              </div>
+            </ScrollReveal>
+
+            <ScrollReveal direction="right" delay={0.45}>
+              <div className="p-5 sm:p-6 rounded-3xl bg-white border border-amber-200/80 shadow-xs hover:border-amber-400 hover:shadow-md transition-all space-y-2">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex items-center gap-2.5">
+                    <div className="p-2.5 rounded-xl bg-teal-900 text-amber-200 border border-teal-800">
+                      <Shuffle className="w-4 h-4 text-amber-300" />
+                    </div>
+                    <h3 className="text-sm sm:text-base font-bold text-slate-900 font-serif-display">3. Formasi Garis Silang</h3>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-md bg-gradient-to-r from-teal-800 to-teal-900 text-amber-200 border border-amber-400/30 font-cinzel">
+                      Transversal Pemotong
+                    </span>
+                    <span className="text-[10px] font-mono-math px-2 py-0.5 rounded bg-slate-100 text-slate-700">
+                      <MathView math="m \cap k, m \cap l" />
+                    </span>
+                  </div>
+                </div>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Dari barisan lurus, penari berpindah membentuk pola silang atau bentuk huruf V. Garis pergerakan ini memotong barisan seperti garis transversal yang memicu relasi sudut istimewa.
+                </p>
+              </div>
+            </ScrollReveal>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  );
+};
