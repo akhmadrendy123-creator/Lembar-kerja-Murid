@@ -1,13 +1,14 @@
 import React from 'react';
-import { Music, Users2, Shuffle, ExternalLink, Sparkles } from 'lucide-react';
+import { Music, Users2, Shuffle, Info, Sparkles } from 'lucide-react';
 import { MathView } from './MathView';
 import { ScrollReveal } from './ScrollReveal';
 
 export const CultureStorySection: React.FC = () => {
   return (
     <section id="section-budaya" className="py-8 scroll-mt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-        {/* Section Header & Academic Source */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        
+        {/* Bagian 1: Header & Sumber Akademis (Asli) */}
         <ScrollReveal direction="up">
           <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
             <div className="space-y-2 max-w-3xl">
@@ -40,11 +41,45 @@ export const CultureStorySection: React.FC = () => {
           </div>
         </ScrollReveal>
 
-        {/* Visual Showcase + 3 Cultural Cards */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-          {/* Left Column: Image with Royal Golden Filigree */}
+        {/* Bagian 2: Integrasi Video YouTube & Kotak Pengamatan (Baru) */}
+        <ScrollReveal direction="up" delay={0.2}>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2 relative w-full rounded-3xl overflow-hidden shadow-xl border-4 border-white bg-slate-900 aspect-video group">
+              <iframe
+                src="https://www.youtube.com/embed/34JKOBxLrMM?rel=0"
+                title="Tarian Boria Pulau Penyengat"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                className="w-full h-full"
+              ></iframe>
+              <div className="absolute top-4 left-4 pointer-events-none">
+                <span className="px-3 py-1 rounded-full text-xs font-bold bg-amber-400 text-slate-900 shadow-md">
+                  Video Amatan
+                </span>
+              </div>
+            </div>
+
+            <div className="lg:col-span-1 bg-teal-50 border border-teal-100 rounded-2xl p-5 sm:p-6 flex flex-col justify-center gap-4 shadow-sm">
+              <div className="flex items-center gap-2 border-b border-teal-200/60 pb-3">
+                <Info className="w-6 h-6 text-teal-600 shrink-0" />
+                <h4 className="font-bold text-teal-900 text-lg">Fokus Pengamatan:</h4>
+              </div>
+              <ul className="list-disc list-outside text-sm text-teal-800 space-y-2.5 ml-4">
+                <li>Amati posisi kaki penari saat jalan di tempat (apakah membentuk <strong>sudut siku-siku</strong>?).</li>
+                <li>Perhatikan gerakan hormat dan ayunan tongkat (apakah membentuk <strong>sudut lancip</strong>?).</li>
+                <li>Lihat bagaimana saf barisan diatur sejajar dan lurus (<strong>berpelurus 180°</strong>).</li>
+              </ul>
+              <div className="mt-2 bg-teal-600/10 p-3 rounded-lg text-xs text-teal-800 font-medium">
+                * Tonton pertunjukan ini sebelum melanjutkan ke misi pencarian sudut di bawah!
+              </div>
+            </div>
+          </div>
+        </ScrollReveal>
+
+        {/* Bagian 3: Visual Gambar Asli & 3 Kartu Konsep Budaya (Asli) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch pt-4">
           <div className="lg:col-span-5">
-            <ScrollReveal direction="left" delay={0.15}>
+            <ScrollReveal direction="left" delay={0.3}>
               <div className="relative rounded-3xl overflow-hidden border-2 border-amber-400/40 shadow-xl group min-h-[380px] h-full flex flex-col justify-end bg-slate-950">
                 <img
                   src="/assets/aistudio/Image_1_cda2bd4f.jpeg"
@@ -53,7 +88,6 @@ export const CultureStorySection: React.FC = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/40 to-transparent"></div>
 
-                {/* Golden corner marks */}
                 <div className="absolute top-3 left-3 z-20 w-3 h-3 border-t-2 border-l-2 border-amber-400"></div>
                 <div className="absolute top-3 right-3 z-20 w-3 h-3 border-t-2 border-r-2 border-amber-400"></div>
 
@@ -79,10 +113,8 @@ export const CultureStorySection: React.FC = () => {
             </ScrollReveal>
           </div>
 
-          {/* Right Column: 3 Mathematical & Cultural Concept Cards */}
           <div className="lg:col-span-7 flex flex-col justify-between gap-4">
-            {/* Card 1 */}
-            <ScrollReveal direction="right" delay={0.1}>
+            <ScrollReveal direction="right" delay={0.35}>
               <div className="p-5 sm:p-6 rounded-3xl bg-white border border-amber-200/80 shadow-xs hover:border-amber-400 hover:shadow-md transition-all space-y-2">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div className="flex items-center gap-2.5">
@@ -106,8 +138,7 @@ export const CultureStorySection: React.FC = () => {
               </div>
             </ScrollReveal>
 
-            {/* Card 2 */}
-            <ScrollReveal direction="right" delay={0.2}>
+            <ScrollReveal direction="right" delay={0.4}>
               <div className="p-5 sm:p-6 rounded-3xl bg-white border border-amber-200/80 shadow-xs hover:border-amber-400 hover:shadow-md transition-all space-y-2">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div className="flex items-center gap-2.5">
@@ -123,41 +154,3 @@ export const CultureStorySection: React.FC = () => {
                     <span className="text-[10px] font-mono-math px-2 py-0.5 rounded bg-slate-100 text-slate-700">
                       <MathView math="k \parallel l" />
                     </span>
-                  </div>
-                </div>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  Penari menjaga jarak sedepa (rentangan tangan) agar barisan depan dan belakang tidak bertabrakan dan selalu berada di garis yang sejajar rapi: jarak antara saf selalu ekuidistan (<MathView math="d_1 = d_2" />).
-                </p>
-              </div>
-            </ScrollReveal>
-
-            {/* Card 3 */}
-            <ScrollReveal direction="right" delay={0.3}>
-              <div className="p-5 sm:p-6 rounded-3xl bg-white border border-amber-200/80 shadow-xs hover:border-amber-400 hover:shadow-md transition-all space-y-2">
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <div className="flex items-center gap-2.5">
-                    <div className="p-2.5 rounded-xl bg-teal-900 text-amber-200 border border-teal-800">
-                      <Shuffle className="w-4 h-4 text-amber-300" />
-                    </div>
-                    <h3 className="text-sm sm:text-base font-bold text-slate-900 font-serif-display">3. Formasi Garis Silang</h3>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-md bg-gradient-to-r from-teal-800 to-teal-900 text-amber-200 border border-amber-400/30 font-cinzel">
-                      Transversal Pemotong
-                    </span>
-                    <span className="text-[10px] font-mono-math px-2 py-0.5 rounded bg-slate-100 text-slate-700">
-                      <MathView math="m \cap k, m \cap l" />
-                    </span>
-                  </div>
-                </div>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  Dari barisan lurus, penari berpindah membentuk pola silang atau bentuk huruf V. Garis pergerakan ini memotong barisan seperti garis transversal yang memicu relasi sudut istimewa.
-                </p>
-              </div>
-            </ScrollReveal>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
