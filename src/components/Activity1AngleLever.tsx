@@ -1,5 +1,5 @@
-import React from 'react';
-import { Sliders, CheckCircle2, MessageSquare, Check, Sparkles, Compass } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Sliders, CheckCircle2, MessageSquare, Check } from 'lucide-react';
 import { classifyAngle } from '../utils/mathGeometry';
 import { MathView } from './MathView';
 import { ScrollReveal } from './ScrollReveal';
@@ -21,6 +21,38 @@ export const Activity1AngleLever: React.FC<Activity1Props> = ({
   onNotesChange,
   onSave,
 }) => {
+  // State lokal untuk 3 kotak jawaban terpisah
+  const [ans1, setAns1] = useState('');
+  const [ans2, setAns2] = useState('');
+  const [ans3, setAns3] = useState('');
+
+  // Sinkronisasi data saat pertama kali dimuat
+  useEffect(() => {
+    if (!notes) return;
+    // Mengabaikan teks jawaban bawaan (default) dari App.tsx agar kotak tetap kosong
+    if (notes.includes('Titik sudut berada di posisi penari')) return; 
+
+    // Jika ada data tersimpan di localStorage, pecah kembali ke 3 kotak
+    if (notes.includes('Jawaban 1:')) {
+      const parts = notes.split(/Jawaban \d:\n/);
+      if (parts.length >= 4) {
+        setAns1(parts[1].trim());
+        setAns2(parts[2].trim());
+        setAns3(parts[3].trim());
+      }
+    }
+  }, []);
+
+  // Fungsi untuk menggabungkan 3 jawaban dan mengirimnya ke App.tsx
+  const updateParentNotes = (q1: string, q2: string, q3: string) => {
+    const combined = `Jawaban 1:\n${q1}\n\nJawaban 2:\n${q2}\n\nJawaban 3:\n${q3}`;
+    onNotesChange(combined);
+  };
+
+  const handleAns1 = (val: string) => { setAns1(val); updateParentNotes(val, ans2, ans3); };
+  const handleAns2 = (val: string) => { setAns2(val); updateParentNotes(ans1, val, ans3); };
+  const handleAns3 = (val: string) => { setAns3(val); updateParentNotes(ans1, ans2, val); };
+
   const classification = classifyAngle(angle);
 
   // SVG Geometry Calculation
@@ -31,7 +63,6 @@ export const Activity1AngleLever: React.FC<Activity1Props> = ({
   const endX = originX + Math.cos(rad) * rayLength;
   const endY = originY - Math.sin(rad) * rayLength;
 
-  // Arc path for the angle
   const arcRadius = 60;
   const arcEndX = originX + Math.cos(rad) * arcRadius;
   const arcEndY = originY - Math.sin(rad) * arcRadius;
@@ -48,19 +79,13 @@ export const Activity1AngleLever: React.FC<Activity1Props> = ({
     { label: '120° (Membuka Sayap V)', val: 120, math: '\\theta = 120^\\circ' },
   ];
 
-  // Mathematical classification formula
   const getClassificationMath = () => {
     switch (classification) {
-      case 'Lancip':
-        return '0^\\circ < \\theta < 90^\\circ';
-      case 'Siku-siku':
-        return '\\theta = 90^\\circ \\; (\\vec{OA} \\perp \\vec{OP})';
-      case 'Tumpul':
-        return '90^\\circ < \\theta < 180^\\circ';
-      case 'Lurus':
-        return '\\theta = 180^\\circ \\; (\\text{Garis Lurus})';
-      default:
-        return '\\theta';
+      case 'Lancip': return '0^\\circ < \\theta < 90^\\circ';
+      case 'Siku-siku': return '\\theta = 90^\\circ \\; (\\vec{OA} \\perp \\vec{OP})';
+      case 'Tumpul': return '90^\\circ < \\theta < 180^\\circ';
+      case 'Lurus': return '\\theta = 180^\\circ \\; (\\text{Garis Lurus})';
+      default: return '\\theta';
     }
   };
 
@@ -87,9 +112,8 @@ export const Activity1AngleLever: React.FC<Activity1Props> = ({
           </div>
         </ScrollReveal>
 
-        {/* 2-Column Content */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          {/* Left Column: Interactive Simulation */}
+          {/* KIRI: Interactive Simulation (Tetap Sama) */}
           <div className="lg:col-span-7">
             <ScrollReveal direction="left" delay={0.1}>
               <div className="bg-white rounded-3xl border-2 border-amber-200/90 shadow-md p-5 sm:p-6 space-y-5">
@@ -100,7 +124,6 @@ export const Activity1AngleLever: React.FC<Activity1Props> = ({
                       Simulasi Arah Langkah Penari
                     </h3>
                   </div>
-
                   <div className="flex items-center gap-2">
                     <span className="px-3 py-1 rounded-lg text-xs font-bold bg-teal-50 text-teal-900 border border-teal-200 font-mono-math">
                       <MathView math={`m\\angle AOP = \\theta = ${angle}^\\circ`} />
@@ -119,16 +142,9 @@ export const Activity1AngleLever: React.FC<Activity1Props> = ({
                   </div>
                 </div>
 
-                {/* SVG Visual Stage with Real Protractor Graduation & Math Notation */}
                 <div className="relative w-full h-80 sm:h-88 bg-gradient-to-b from-slate-50 via-white to-amber-50/20 rounded-2xl border border-amber-200/60 overflow-hidden flex items-center justify-center shadow-inner">
-                  {/* Subtle Wood / Stage Floor grid */}
                   <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] bg-[size:22px_22px]"></div>
-
-                  <svg
-                    viewBox="0 0 420 280"
-                    className="w-full h-full select-none"
-                    style={{ filter: 'drop-shadow(0px 2px 4px rgba(0,0,0,0.03))' }}
-                  >
+                  <svg viewBox="0 0 420 280" className="w-full h-full select-none" style={{ filter: 'drop-shadow(0px 2px 4px rgba(0,0,0,0.03))' }}>
                     <defs>
                       <linearGradient id="angleGlow" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" stopColor="#0D9488" stopOpacity="0.28" />
@@ -136,15 +152,8 @@ export const Activity1AngleLever: React.FC<Activity1Props> = ({
                       </linearGradient>
                     </defs>
 
-                    {/* Protractor Arch (Busur Derajat Geometri) */}
-                    <path
-                      d={`M ${originX + rayLength} ${originY} A ${rayLength} ${rayLength} 0 0 0 ${originX - rayLength} ${originY}`}
-                      fill="none"
-                      stroke="#CBD5E1"
-                      strokeWidth="1.5"
-                    />
+                    <path d={`M ${originX + rayLength} ${originY} A ${rayLength} ${rayLength} 0 0 0 ${originX - rayLength} ${originY}`} fill="none" stroke="#CBD5E1" strokeWidth="1.5" />
 
-                    {/* Protractor Tick Marks every 10 and 30 degrees */}
                     {[0, 15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165, 180].map((deg) => {
                       const tickRad = (deg * Math.PI) / 180;
                       const isMajor = deg % 30 === 0 || deg === 45 || deg === 90;
@@ -160,155 +169,60 @@ export const Activity1AngleLever: React.FC<Activity1Props> = ({
 
                       return (
                         <g key={deg}>
-                          <line
-                            x1={x1}
-                            y1={y1}
-                            x2={x2}
-                            y2={y2}
-                            stroke={isMajor ? '#64748B' : '#CBD5E1'}
-                            strokeWidth={isMajor ? 1.5 : 1}
-                          />
+                          <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={isMajor ? '#64748B' : '#CBD5E1'} strokeWidth={isMajor ? 1.5 : 1} />
                           {isMajor && (
-                            <text
-                              x={labelX}
-                              y={labelY + 3}
-                              textAnchor="middle"
-                              className="text-[10px] font-mono font-bold fill-slate-700"
-                            >
-                              {deg}°
-                            </text>
+                            <text x={labelX} y={labelY + 3} textAnchor="middle" className="text-[10px] font-mono font-bold fill-slate-700">{deg}°</text>
                           )}
                         </g>
                       );
                     })}
 
-                    {/* Shaded Angle Sector */}
                     {angle > 0 && (
-                      <path
-                        d={`M ${originX} ${originY} L ${originX + arcRadius} ${originY} A ${arcRadius} ${arcRadius} 0 ${largeArcFlag} 0 ${arcEndX} ${arcEndY} Z`}
-                        fill="url(#angleGlow)"
-                      />
+                      <path d={`M ${originX} ${originY} L ${originX + arcRadius} ${originY} A ${arcRadius} ${arcRadius} 0 ${largeArcFlag} 0 ${arcEndX} ${arcEndY} Z`} fill="url(#angleGlow)" />
                     )}
 
-                    {/* Arc Stroke Line */}
-                    {angle > 0 && (
-                      <path d={arcPath} fill="none" stroke="#0D9488" strokeWidth="2.5" />
-                    )}
+                    {angle > 0 && <path d={arcPath} fill="none" stroke="#0D9488" strokeWidth="2.5" />}
 
-                    {/* Dynamic Degree Label in Arc Center */}
                     {angle >= 10 && (
-                      <g
-                        transform={`translate(${
-                          originX + Math.cos(rad / 2) * (arcRadius + 18)
-                        }, ${originY - Math.sin(rad / 2) * (arcRadius + 18)})`}
-                      >
+                      <g transform={`translate(${originX + Math.cos(rad / 2) * (arcRadius + 18)}, ${originY - Math.sin(rad / 2) * (arcRadius + 18)})`}>
                         <rect x="-18" y="-9" width="36" height="18" rx="4" fill="#044E3D" />
-                        <text
-                          x="0"
-                          y="3"
-                          textAnchor="middle"
-                          className="text-[10px] font-bold fill-amber-300 font-mono"
-                        >
-                          {angle}°
-                        </text>
+                        <text x="0" y="3" textAnchor="middle" className="text-[10px] font-bold fill-amber-300 font-mono">{angle}°</text>
                       </g>
                     )}
 
-                    {/* Baseline Sinar Garis OA (Sumbu 0°) */}
-                    <line
-                      x1={originX - 30}
-                      y1={originY}
-                      x2={originX + rayLength + 30}
-                      y2={originY}
-                      stroke="#1E293B"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                    />
-                    {/* Arrow head for Ray OA */}
-                    <polygon
-                      points={`${originX + rayLength + 35},${originY} ${originX + rayLength + 25},${originY - 4} ${originX + rayLength + 25},${originY + 4}`}
-                      fill="#1E293B"
-                    />
+                    <line x1={originX - 30} y1={originY} x2={originX + rayLength + 30} y2={originY} stroke="#1E293B" strokeWidth="2.5" strokeLinecap="round" />
+                    <polygon points={`${originX + rayLength + 35},${originY} ${originX + rayLength + 25},${originY - 4} ${originX + rayLength + 25},${originY + 4}`} fill="#1E293B" />
                     <circle cx={originX + rayLength + 10} cy={originY} r="3" fill="#1E293B" />
-                    <text
-                      x={originX + rayLength + 10}
-                      y={originY - 8}
-                      className="text-[10px] font-bold fill-slate-800 font-mono-math"
-                    >
-                      A (Saf 0°)
-                    </text>
+                    <text x={originX + rayLength + 10} y={originY - 8} className="text-[10px] font-bold fill-slate-800 font-mono-math">A (Saf 0°)</text>
 
-                    {/* Ray OP (Arah Melangkah Penari) */}
-                    <line
-                      x1={originX}
-                      y1={originY}
-                      x2={endX}
-                      y2={endY}
-                      stroke="#0D9488"
-                      strokeWidth="3.5"
-                      strokeLinecap="round"
-                    />
-                    {/* Footstep dots along Ray OP */}
+                    <line x1={originX} y1={originY} x2={endX} y2={endY} stroke="#0D9488" strokeWidth="3.5" strokeLinecap="round" />
                     {[0.3, 0.55, 0.8].map((ratio, i) => (
-                      <circle
-                        key={i}
-                        cx={originX + Math.cos(rad) * (rayLength * ratio)}
-                        cy={originY - Math.sin(rad) * (rayLength * ratio)}
-                        r="3"
-                        fill="#F59E0B"
-                        opacity={0.8}
-                      />
+                      <circle key={i} cx={originX + Math.cos(rad) * (rayLength * ratio)} cy={originY - Math.sin(rad) * (rayLength * ratio)} r="3" fill="#F59E0B" opacity={0.8} />
                     ))}
 
-                    {/* Point P Arrow Head */}
                     <circle cx={endX} cy={endY} r="6" fill="#0D9488" stroke="#FFFFFF" strokeWidth="2" />
-                    <text
-                      x={endX + Math.cos(rad) * 18}
-                      y={endY - Math.sin(rad) * 16 + 4}
-                      textAnchor="middle"
-                      className="text-xs font-extrabold fill-teal-900 font-mono-math"
-                    >
-                      P (Arah Langkah)
-                    </text>
+                    <text x={endX + Math.cos(rad) * 18} y={endY - Math.sin(rad) * 16 + 4} textAnchor="middle" className="text-xs font-extrabold fill-teal-900 font-mono-math">P (Arah Langkah)</text>
 
-                    {/* Vertex Origin O */}
                     <circle cx={originX} cy={originY} r="8" fill="#BE123C" stroke="#FFFFFF" strokeWidth="2.5" />
-                    <text
-                      x={originX}
-                      y={originY + 22}
-                      textAnchor="middle"
-                      className="text-xs font-black fill-rose-800 font-mono-math"
-                    >
-                      Titik O (Verteks)
-                    </text>
+                    <text x={originX} y={originY + 22} textAnchor="middle" className="text-xs font-black fill-rose-800 font-mono-math">Titik O (Verteks)</text>
 
-                    {/* Top-down Dancer Avatar icon at Origin O rotated along angle */}
                     <g transform={`translate(${originX}, ${originY}) rotate(${-angle})`}>
-                      {/* Songket waist sash representation */}
                       <path d="M -8 -12 L 8 -12 L 6 0 L -6 0 Z" fill="#D97706" opacity="0.4" />
-                      {/* Shoulders */}
                       <ellipse cx="0" cy="-6" rx="14" ry="4" fill="#065F46" opacity="0.9" />
-                      {/* Head / Tanjak headdress */}
                       <circle cx="0" cy="-6" r="5" fill="#FDE68A" />
                       <polygon points="0,-12 4,-6 -4,-6" fill="#D97706" />
                     </g>
                   </svg>
                 </div>
 
-                {/* Mathematical Definition Formula Banner */}
                 <div className="p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200/80 flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2">
                     <span className="text-[10px] font-bold text-amber-900 font-cinzel">DEFINISI MATEMATIS:</span>
-                    <span className="font-mono-math font-bold text-teal-900">
-                      <MathView math={getClassificationMath()} />
-                    </span>
+                    <span className="font-mono-math font-bold text-teal-900"><MathView math={getClassificationMath()} /></span>
                   </div>
-                  <span className="text-[11px] text-slate-500 font-medium">
-                    Notasi: <MathView math="m\angle AOP = \theta" />
-                  </span>
+                  <span className="text-[11px] text-slate-500 font-medium">Notasi: <MathView math="m\angle AOP = \theta" /></span>
                 </div>
 
-                {/* Slider Control with Graduations */}
                 <div className="space-y-3 pt-1">
                   <div className="flex items-center justify-between text-xs text-slate-500 font-semibold font-mono">
                     <span>15° (Serong Luar)</span>
@@ -317,28 +231,19 @@ export const Activity1AngleLever: React.FC<Activity1Props> = ({
                     <span>135°</span>
                     <span>165° (Balik)</span>
                   </div>
-
                   <input
-                    type="range"
-                    min="0"
-                    max="180"
-                    value={angle}
+                    type="range" min="0" max="180" value={angle}
                     onChange={(e) => onAngleChange(Number(e.target.value))}
                     className="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-teal-800 focus:outline-none"
                   />
                 </div>
 
-                {/* Quick Preset Buttons */}
                 <div className="space-y-2 pt-1">
-                  <span className="text-[11px] font-bold text-slate-600 font-cinzel">
-                    Pilihan Cepat Sudut Formasi Boria:
-                  </span>
+                  <span className="text-[11px] font-bold text-slate-600 font-cinzel">Pilihan Cepat Sudut Formasi Boria:</span>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                     {presets.map((p) => (
                       <button
-                        key={p.val}
-                        type="button"
-                        onClick={() => onAngleChange(p.val)}
+                        key={p.val} type="button" onClick={() => onAngleChange(p.val)}
                         className={`px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer flex flex-col items-center justify-center gap-0.5 ${
                           angle === p.val
                             ? 'bg-gradient-to-r from-teal-800 to-teal-700 text-amber-200 shadow-sm border border-amber-400/40'
@@ -346,9 +251,7 @@ export const Activity1AngleLever: React.FC<Activity1Props> = ({
                         }`}
                       >
                         <span className="font-bold">{p.label}</span>
-                        <span className="text-[10px] opacity-80 font-mono-math">
-                          <MathView math={p.math} />
-                        </span>
+                        <span className="text-[10px] opacity-80 font-mono-math"><MathView math={p.math} /></span>
                       </button>
                     ))}
                   </div>
@@ -357,7 +260,7 @@ export const Activity1AngleLever: React.FC<Activity1Props> = ({
             </ScrollReveal>
           </div>
 
-          {/* Right Column: Discussion & Group Notes (REVISED) */}
+          {/* KANAN: Discussion & Group Notes (REVISI BARU - 3 KOTAK ISIAN) */}
           <div className="lg:col-span-5">
             <ScrollReveal direction="right" delay={0.2}>
               <div className="bg-white rounded-3xl border-2 border-amber-200/90 shadow-md p-5 sm:p-6 space-y-4">
@@ -374,68 +277,70 @@ export const Activity1AngleLever: React.FC<Activity1Props> = ({
                   </p>
                 </div>
 
-                {/* 3 Discussion Guide Points (Tanpa Jawaban) */}
-                <div className="space-y-2.5 text-xs">
-                  <div className="p-3.5 rounded-2xl bg-[#FAF9F6] border border-slate-100 space-y-1">
-                    <div className="font-bold text-slate-800 font-serif-display">
-                      1. Di mana titik sudutnya?
-                    </div>
-                    <p className="text-slate-500">
-                      Sudut terbentuk di titik mana saat penari mengayunkan langkahnya?
-                    </p>
+                {/* 3 Kotak Pertanyaan Terpisah */}
+                <div className="space-y-4 pt-2">
+                  
+                  {/* Pertanyaan 1 */}
+                  <div className="bg-[#FAF9F6] border border-slate-200 rounded-2xl p-4 sm:p-5 transition-all focus-within:border-teal-400 focus-within:ring-4 focus-within:ring-teal-500/10">
+                    <h4 className="text-sm font-bold text-slate-800 mb-1">1. Di mana titik sudutnya?</h4>
+                    <p className="text-xs text-slate-500 mb-3">Sudut terbentuk di titik mana saat penari mengayunkan langkahnya?</p>
+                    <textarea
+                      rows={2}
+                      value={ans1}
+                      onChange={(e) => handleAns1(e.target.value)}
+                      placeholder="Ketik jawaban kelompokmu di sini..."
+                      className="w-full text-sm bg-white border border-slate-200 rounded-xl p-3 focus:outline-none focus:border-teal-500 transition-all resize-none shadow-sm"
+                    />
                   </div>
 
-                  <div className="p-3.5 rounded-2xl bg-[#FAF9F6] border border-slate-100 space-y-1">
-                    <div className="font-bold text-slate-800 font-serif-display">
-                      2. Apa bedanya saat sudut digeser ke 90° atau 120°?
-                    </div>
-                    <p className="text-slate-500">
-                      Apakah sudutnya menjadi lancip, siku-siku, atau tumpul?
-                    </p>
+                  {/* Pertanyaan 2 */}
+                  <div className="bg-[#FAF9F6] border border-slate-200 rounded-2xl p-4 sm:p-5 transition-all focus-within:border-teal-400 focus-within:ring-4 focus-within:ring-teal-500/10">
+                    <h4 className="text-sm font-bold text-slate-800 mb-1">2. Apa bedanya saat sudut digeser ke 90° atau 120°?</h4>
+                    <p className="text-xs text-slate-500 mb-3">Apakah sudutnya menjadi lancip, siku-siku, atau tumpul?</p>
+                    <textarea
+                      rows={2}
+                      value={ans2}
+                      onChange={(e) => handleAns2(e.target.value)}
+                      placeholder="Ketik jawaban kelompokmu di sini..."
+                      className="w-full text-sm bg-white border border-slate-200 rounded-xl p-3 focus:outline-none focus:border-teal-500 transition-all resize-none shadow-sm"
+                    />
                   </div>
 
-                  <div className="p-3.5 rounded-2xl bg-[#FAF9F6] border border-slate-100 space-y-1">
-                    <div className="font-bold text-slate-800 font-serif-display">
-                      3. Mengapa sudut yang tepat penting bagi penari?
-                    </div>
-                    <p className="text-slate-500">
-                      Bagaimana keseragaman sudut membuat tarian terlihat rapi dan tidak tabrakan?
-                    </p>
+                  {/* Pertanyaan 3 */}
+                  <div className="bg-[#FAF9F6] border border-slate-200 rounded-2xl p-4 sm:p-5 transition-all focus-within:border-teal-400 focus-within:ring-4 focus-within:ring-teal-500/10">
+                    <h4 className="text-sm font-bold text-slate-800 mb-1">3. Mengapa sudut yang tepat penting bagi penari?</h4>
+                    <p className="text-xs text-slate-500 mb-3">Bagaimana keseragaman sudut membuat tarian terlihat rapi dan tidak tabrakan?</p>
+                    <textarea
+                      rows={2}
+                      value={ans3}
+                      onChange={(e) => handleAns3(e.target.value)}
+                      placeholder="Ketik jawaban kelompokmu di sini..."
+                      className="w-full text-sm bg-white border border-slate-200 rounded-xl p-3 focus:outline-none focus:border-teal-500 transition-all resize-none shadow-sm"
+                    />
                   </div>
+
                 </div>
 
-                {/* Form Textarea */}
-                <div className="space-y-2 pt-2">
-                  <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider font-cinzel">
-                    Tuliskan Kesimpulan Kelompok Kalian:
-                  </label>
-                  <textarea
-                    rows={5}
-                    value={notes}
-                    onChange={(e) => onNotesChange(e.target.value)}
-                    placeholder="Ketik hasil diskusi kelompok kalian di sini..."
-                    className="w-full p-3.5 text-xs bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-teal-700 focus:bg-white transition-all text-slate-800 font-medium leading-relaxed resize-none"
-                  />
+                {/* Tombol Simpan */}
+                <div className="pt-2">
+                  <button
+                    type="button"
+                    onClick={onSave}
+                    className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-gradient-to-r from-teal-800 to-teal-700 hover:from-teal-900 hover:to-teal-800 text-amber-200 font-bold text-xs transition-all shadow-md shadow-teal-900/20 active:scale-98 cursor-pointer border border-amber-400/30"
+                  >
+                    {isSaved ? (
+                      <>
+                        <Check className="w-4 h-4 text-emerald-300" />
+                        <span>Jawaban Aktivitas 1 Telah Tersimpan!</span>
+                      </>
+                    ) : (
+                      <>
+                        <CheckCircle2 className="w-4 h-4 text-amber-300" />
+                        <span>Simpan Semua Jawaban</span>
+                      </>
+                    )}
+                  </button>
                 </div>
-
-                {/* Save Button */}
-                <button
-                  type="button"
-                  onClick={onSave}
-                  className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-gradient-to-r from-teal-800 to-teal-700 hover:from-teal-900 hover:to-teal-800 text-amber-200 font-bold text-xs transition-all shadow-md shadow-teal-900/20 active:scale-98 cursor-pointer border border-amber-400/30"
-                >
-                  {isSaved ? (
-                    <>
-                      <Check className="w-4 h-4 text-emerald-300" />
-                      <span>Catatan Aktivitas 1 Telah Tersimpan!</span>
-                    </>
-                  ) : (
-                    <>
-                      <CheckCircle2 className="w-4 h-4 text-amber-300" />
-                      <span>Simpan Catatan Pengamatan</span>
-                    </>
-                  )}
-                </button>
               </div>
             </ScrollReveal>
           </div>
